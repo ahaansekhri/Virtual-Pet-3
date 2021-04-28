@@ -1,43 +1,44 @@
 class Food{
     constructor(foodStock,lastFed){
       this.image = loadImage("Milk.png")
-
-
-
     }
     
      getFoodStock(){
       foodStock  = database.ref('Food');
       foodStock.on("value",function(data){
          foodS = data.val();
-      })
-    
+      })  
     }
     
      updateFoodStock(x){
-      if(x !== 0){
-        x--;
-      }
-    
-      database.ref('/').update({Food:x});
-    }
-
-    deductFood(){
+      database.ref('/').update({Food:foodS-x, FeedTime:hour()});
 
     }
 
     addFoodStock(x){
-      x++;
-      database.ref('/').update({Food:x});
+      if(foodS<30){
+        x++;
+        database.ref('/').update({Food:x});
+      }
+
+      else{
+        text("Enough food no more", 50,50);
+      }
     }
 
-    display(){
-      var x = 0;
-      var y = 100;
-
-      imageMode(CENTER);
-      image(this.image,720,220,70,70);
+      display(){ 
+        var x=50;
+        var y=40;
+        if(foodS!=0 && foodS <= 30){ 
+          for (var i=0;i<foodS;i++){ 
+            if(i%10==0){
+              y+=65;
+              x=40;
+            } 
+            image(this.image,x,y,70,70) 
+            x+=30 
+          } 
+        } 
+      }
     }
-    
-  }
-
+  
